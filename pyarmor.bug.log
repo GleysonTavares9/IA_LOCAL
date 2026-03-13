@@ -1,0 +1,12 @@
+[BUG]: no found input "core\*.py"
+
+## Command Line
+C:\Users\GleysonMiranda\Downloads\IA_Local\venv\Scripts\pyarmor gen --output dist_protected app.py core/*.py core/__init__.py
+
+## Environments
+Python 3.11.9
+Pyarmor 9.2.3 (trial), 000000, non-profits
+Platform windows.x86_64
+Native windows.amd64
+Home C:\Users\GleysonMiranda\.pyarmor
+

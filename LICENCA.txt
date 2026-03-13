@@ -1,0 +1,17 @@
+TERMOS DE USO E LICENÇA - IA LOCAL SOBERANA
+
+1. PROPRIEDADE INTELECTUAL
+Este software e todo o seu código-fonte, ofuscado ou não, são de propriedade exclusiva de Gleyson Miranda Tavares. É proibida a cópia, engenharia reversa ou redistribuição não autorizada.
+
+2. USO PRIVADO E LOCAL
+A IA Local Soberana processa todos os dados localmente. O usuário é o único responsável pelos documentos enviados e pelas informações extraídas. O software não envia dados para a internet.
+
+3. LIMITAÇÃO DE RESPONSABILIDADE
+O software é fornecido "como está". O desenvolvedor não se responsabiliza por decisões financeiras ou contábeis tomadas com base nas respostas da IA. Os resultados devem ser conferidos por um profissional humano.
+
+4. REQUISITOS DE HARDWARE
+Para o funcionamento ideal, recomenda-se processador i5 (ou superior) e 16GB de RAM. O desempenho depende diretamente do hardware do usuário.
+
+Ao clicar em "Eu aceito", você concorda com estes termos.
+
+© 2025 Gleyson Miranda Tavares. Todos os direitos reservados.

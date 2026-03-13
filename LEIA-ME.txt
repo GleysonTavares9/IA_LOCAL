@@ -1,0 +1,17 @@
+IA LOCAL SOBERANA - GUIA DE USO
+
+PARABÉNS! Você acaba de instalar a IA Local Soberana v2.1.
+
+COMO USAR:
+1. Use o atalho "IA Local Soberana" na sua Área de Trabalho.
+2. Na primeira vez, o sistema baixará os modelos de IA (Llama 3.2). Aguarde o terminal concluir o download.
+3. O sistema abrirá automaticamente o navegador em: http://localhost:8501
+
+CARACTERÍSTICAS:
+- 100% Offline e Privado.
+- Focado em análise de Balancetes e Contabilidade.
+- Blindagem de código para sua segurança.
+
+SUPORTE:
+Desenvolvido por Gleyson Miranda Tavares.
+© 2025

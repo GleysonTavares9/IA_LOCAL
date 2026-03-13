@@ -1,0 +1,1 @@
+@echo off\ncls\necho ===========================================================\necho   IA LOCAL - CHAT DIRETO (TERMINAL)\necho ===========================================================\n\n.\\venv\\Scripts\\python.exe scripts\\perguntar_direto.py\n\npause

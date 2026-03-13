@@ -1,0 +1,43 @@
+# .gitignore — IA Local RAG
+
+# Banco vetorial (grande, recriável)
+banco_vetorial/
+
+# Banco de dados local
+dados_db/
+
+# Logs
+logs/
+
+# Ambiente Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+Output/
+
+# Variáveis de ambiente (NUNCA comitar)
+.env
+.env.local
+.env.*.local
+
+# Documentos pessoais/corporativos (NUNCA comitar)
+documentos/pdfs/
+documentos/planilhas/
+documentos/outros/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
