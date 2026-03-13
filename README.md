@@ -1,168 +1,88 @@
-# 🤖 IA Local RAG
+# 🌌 Soberana Intelligence — Universal RAG
+> **A Inteligência de Ultra-Alta Performance para Processamento Deep Documents.**
 
-> **IA local, soberana e gratuita** que responde perguntas com base nos seus documentos (PDFs, planilhas, CSVs) — sem API externa, sem custo recorrente, 100% privado.
+A **Soberana Intelligence** é um supercomputador de análise documental projetado para processar documentos complexos (Balancetes, Contratos Jurídicos, Manuais Técnicos) com raciocínio de "Nível NASA". 
 
-**Stack:** Ollama · LangChain · ChromaDB · Streamlit
+Diferente de IAs comuns, a Soberana opera em modo **Híbrido**: Local (Soberania Total) ou Online (Poder Extremo), permitindo que você escolha entre privacidade absoluta ou a velocidade das maiores IAs do mundo.
 
 ---
 
-## ⚡ Início Rápido (3 passos)
+## 🚀 Diferenciais Soberanos
 
+*   **🧠 Raciocínio Nível NASA:** Prompt engineering avançado para análise cirúrgica de dados.
+*   **🔌 Hybrid Engine:** Suporte nativo para **Ollama (Local)**, **OpenAI (GPT-4o)**, **Groq (Ultra Speed)**, **Google Gemini** e **Hugging Face**.
+*   **🔒 Modo Invisível:** Suas chaves de API ficam blindadas no arquivo `.env`, sem nunca serem expostas na interface.
+*   **📄 Deep Documents:** Processamento especializado em PDFs, Excel (XLSX/XLS), CSV e TXT.
+*   **🧹 Desinstalação Limpa:** O instalador remove todos os rastros, garantindo que nenhum "lixo" fique no computador.
+
+---
+
+## ⚡ Início Rápido
+
+Para a maioria dos usuários, basta baixar o instalador profissional:
+
+1.  **Baixe o Instalador:** Localize o `Instalador_IA_Soberana_v2.3.exe`.
+2.  **Instale:** Siga os passos do assistente (padrão Windows).
+3.  **Inicie:** Use o atalho na Área de Trabalho ou o arquivo `INICIAR_IA.bat`.
+
+### Desenvolvimento / Manual
 ```powershell
-# 1. Instalar Ollama (Windows)
-winget install Ollama.Ollama
+# 1. Clone o repositório
+git clone https://github.com/GleysonTavares9/IA_LOCAL.git
 
-# 2. Baixar os modelos
-ollama pull llama3.1:8b
-ollama pull nomic-embed-text
-
-# 3. Instalar dependências e iniciar
+# 2. Configure o ambiente
 python -m venv venv
-venv\Scripts\activate
+.\venv\Scripts\activate
 pip install -r requirements.txt
 
-# Coloque seus PDFs em documentos\pdfs\ e planilhas em documentos\planilhas\
-python indexar.py        # Indexar documentos
-python chatbot.py        # Chat no terminal
-streamlit run app.py     # Interface Web
-```
+# 3. Configure suas chaves (Opcional)
+# Edite o arquivo .env para incluir suas APIs de nuvem
 
-Ou simplesmente execute `start.bat` para o menu interativo.
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-ia-local-rag/
-├── core/                  ← Módulos compartilhados
-│   ├── config.py          ← Configurações centralizadas
-│   ├── loaders.py         ← Carregadores de documentos
-│   ├── vectorstore.py     ← ChromaDB (criar/carregar)
-│   └── rag_chain.py       ← Pipeline RAG
-├── documentos/
-│   ├── pdfs/              ← Coloque seus PDFs aqui
-│   ├── planilhas/         ← Excel e CSV aqui
-│   └── outros/            ← TXT, DOCX, etc.
-├── scripts/
-│   ├── criar_db_exemplo.py ← Cria banco SQLite de teste
-│   └── testar_sistema.py   ← Suite de testes de sanidade
-├── banco_vetorial/        ← ChromaDB (gerado automaticamente)
-├── dados_db/              ← Banco SQL (opcional)
-├── logs/                  ← Logs de execução
-├── indexar.py             ← Indexar documentos
-├── chatbot.py             ← Chat no terminal
-├── app.py                 ← Interface Web (Streamlit)
-├── db_agent.py            ← Consulta SQL em linguagem natural
-├── start.bat              ← Inicializador Windows
-├── .env                   ← Configurações (edite aqui)
-└── requirements.txt
+# 4. Rode o sistema
+.\INICIAR_IA.bat
 ```
 
 ---
 
-## 🔧 Configuração (.env)
+## 📁 Estrutura de Elite
 
-| Variável | Padrão | Descrição |
-|---|---|---|
-| `LLM_MODEL` | `llama3.1:8b` | Modelo de linguagem |
-| `EMBEDDING_MODEL` | `nomic-embed-text` | Modelo de embeddings |
-| `CHUNK_SIZE` | `1000` | Tamanho dos chunks |
-| `CHUNK_OVERLAP` | `200` | Sobreposição entre chunks |
-| `TOP_K_RESULTS` | `5` | Trechos buscados por pergunta |
-| `LLM_TEMPERATURE` | `0.1` | Criatividade (0=factual, 1=criativo) |
-
-### Modelos alternativos
-
-| Modelo | RAM | Qualidade | Idioma |
-|---|---|---|---|
-| `llama3.1:8b` | 8 GB | ⭐⭐⭐⭐ | Ótimo PT |
-| `qwen2.5:7b` | 8 GB | ⭐⭐⭐⭐⭐ | Excelente PT |
-| `gemma3:4b` | 4 GB | ⭐⭐⭐ | Bom PT |
-| `phi3:mini` | 4 GB | ⭐⭐ | OK |
-
----
-
-## 📖 Uso
-
-### Indexar documentos
-
-```powershell
-python indexar.py            # Indexar novos documentos
-python indexar.py --limpar   # Apagar e reindexar tudo
-python indexar.py --info     # Ver status do banco atual
 ```
-
-### Chat no terminal
-
-```powershell
-python chatbot.py
-```
-
-Comandos disponíveis no chat:
-- `ajuda` — lista todos os comandos
-- `fontes` — documentos indexados
-- `reindexar` — reprocessa sem sair
-- `limpar` — apaga histórico da sessão
-- `sair` — encerra
-
-### Interface Web
-
-```powershell
-streamlit run app.py
-# Acesse: http://localhost:8501
-```
-
-### Agente SQL (Text-to-SQL)
-
-```powershell
-# Criar banco de exemplo primeiro:
-python scripts\criar_db_exemplo.py
-
-# Iniciar agente:
-python db_agent.py
-python db_agent.py --url postgresql://user:pass@localhost/meubanco
+IA_Local/
+├── core/                  ← Cérebro do sistema (Configurações NASA)
+├── documentos/            ← Onde seus documentos são processados
+├── banco_vetorial/        ← Memória de longo prazo da IA
+├── dist/                  ← Binários blindados (launcher.exe)
+├── .env                   ← Onde a mágica (e a segurança) acontece
+└── INICIAR_IA.bat         ← Painel de controle de decolagem
 ```
 
 ---
 
-## 🧪 Testar o sistema
+## 🔧 Configurações Blindadas (.env)
 
-```powershell
-python scripts\testar_sistema.py
-```
-
-Executa 6 verificações: Ollama, embeddings, carregamento, indexação, busca e pipeline completo.
-
----
-
-## 🛠️ Troubleshooting
-
-| Problema | Solução |
+| Variável | Descrição |
 |---|---|
-| `Connection refused` no Ollama | `ollama serve` no terminal |
-| Modelo não encontrado | `ollama pull llama3.1:8b` |
-| Erro de memória | Use `gemma3:4b` e edite `LLM_MODEL` no `.env` |
-| PDF não carrega | `pip install pymupdf pypdf2` |
-| Planilha não carrega | `pip install openpyxl unstructured[xlsx]` |
-| Respostas em inglês | Verifique o prompt em `core/config.py` |
-| Banco corrompido | `python indexar.py --limpar` |
+| `OPENAI_API_KEY` | Ativa o modo OpenAI Pro |
+| `GROQ_API_KEY` | Ativa a velocidade ultra-rápida do Groq |
+| `GEMINI_API_KEY` | Ativa a inteligência do Google Gemini |
+| `HUGGINGFACE_API_KEY` | Conecta ao ecossistema Open Source Global |
+| `LLM_MODEL` | Define o motor local padrão (Ex: llama3.2:3b) |
 
 ---
 
-## 🗺️ Roadmap
-
-- [x] RAG com PDFs e planilhas
-- [x] ChromaDB vetorial
-- [x] Interface Streamlit
-- [x] Chatbot de terminal
-- [x] Text-to-SQL (SQLite/PostgreSQL)
-- [ ] API REST com FastAPI
-- [ ] Indexação automática por watcher
-- [ ] Multi-agentes (docs + DB)
-- [ ] Autenticação e controle de acesso
-- [ ] Fine-tuning com dados proprietários
+## 🛡️ Privacidade e Soberania
+A **Soberana Intelligence** foi construída sob o princípio da **Soberania de Dados**. Seus documentos nunca alimentam modelos de terceiros quando operando em modo Local. Ideal para escritórios de contabilidade, advocacia e departamentos de engenharia.
 
 ---
 
-*Stack: Ollama + LangChain + ChromaDB + Streamlit | 100% local · 100% privado · 100% gratuito*
+## 🗺️ Roadmap de Evolução
+- [x] Motor Híbrido Local/Cloud
+- [x] Raciocínio Complexo (Step-by-step)
+- [x] Blindagem de Chaves de API
+- [x] Instalador com Limpeza Profunda
+- [ ] Módulo Vision (Análise de Imagens e Fluxogramas)
+- [ ] Conector nativo com ERPs via SQL
+
+---
+
+*🌌 Soberana Intelligence: 100% Brasileira · 100% Potente · 100% Sua.*
