@@ -13,6 +13,7 @@ from app.retrieval.retriever import Retriever
 from app.llm.answer_generator import AnswerGenerator
 from app.config.settings import USE_EXTERNAL_API, LLM_MODEL_LOCAL, EXTERNAL_LLM_MODEL, RAW_DATA_PATH
 from app.storage.metadata_db import MetadataDB
+from app.utils.sentiment import SentimentAnalyzer
 
 # Configuração da Página
 st.set_page_config(
@@ -42,25 +43,15 @@ st.markdown("""
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
     }
-    .sidebar .sidebar-content {
-        background-image: linear-gradient(#2e3b4e, #1c2531);
-        color: white;
-    }
-    .stButton>button {
-        width: 100%;
-        border-radius: 8px;
-        height: 3em;
-        background-color: #0d6efd;
-        color: white;
-        font-weight: bold;
-    }
-    .upload-section {
-        border: 2px dashed #dee2e6;
-        padding: 20px;
+    .sentiment-badge {
+        font-size: 0.8em;
+        padding: 2px 8px;
         border-radius: 10px;
-        text-align: center;
-        background-color: white;
+        margin-left: 10px;
     }
+    .sentiment-positivo { background-color: #d4edda; color: #155724; }
+    .sentiment-neutro { background-color: #fff3cd; color: #856404; }
+    .sentiment-negativo { background-color: #f8d7da; color: #721c24; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -72,9 +63,10 @@ def load_system():
     vector_store = VectorStore()
     retriever = Retriever(embedder, vector_store)
     generator = AnswerGenerator()
-    return db, retriever, generator
+    sentiment_analyzer = SentimentAnalyzer()
+    return db, retriever, generator, sentiment_analyzer
 
-db, retriever, generator = load_system()
+db, retriever, generator, sentiment_analyzer = load_system()
 
 # Sidebar
 with st.sidebar:
@@ -96,7 +88,6 @@ with st.sidebar:
                     save_path = RAW_DATA_PATH / uploaded_file.name
                     with open(save_path, "wb") as f:
                         f.write(uploaded_file.getbuffer())
-                    # Simulação de indexação
                     time.sleep(1)
                 st.success(f"{len(uploaded_files)} arquivos indexados!")
                 st.rerun()
@@ -109,6 +100,7 @@ with st.sidebar:
     
     if st.button("🧹 Limpar Chat"):
         st.session_state.messages = []
+        st.session_state.sentiments = []
         st.rerun()
 
 # Área Principal
@@ -119,28 +111,39 @@ with col1:
     
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "sentiments" not in st.session_state:
+        st.session_state.sentiments = []
 
     # Container para o chat
     chat_container = st.container(height=500)
     
     with chat_container:
-        for message in st.session_state.messages:
+        for i, message in enumerate(st.session_state.messages):
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
+                # Exibe sentimento se for mensagem do usuário
+                if message["role"] == "user" and i < len(st.session_state.sentiments):
+                    s = st.session_state.sentiments[i]
+                    st.markdown(f"<span class='sentiment-badge sentiment-{s['sentiment']}'>{s['sentiment'].upper()}</span>", unsafe_allow_html=True)
 
     if prompt := st.chat_input("Pergunte algo sobre a empresa..."):
+        # Análise de Sentimento
+        with st.spinner("Analisando tom da mensagem..."):
+            sentiment_res = sentiment_analyzer.analyze(prompt)
+            st.session_state.sentiments.append(sentiment_res)
+        
         st.session_state.messages.append({"role": "user", "content": prompt})
+        
         with chat_container:
             with st.chat_message("user"):
                 st.markdown(prompt)
+                st.markdown(f"<span class='sentiment-badge sentiment-{sentiment_res['sentiment']}'>{sentiment_res['sentiment'].upper()}</span>", unsafe_allow_html=True)
 
             with st.chat_message("assistant"):
                 with st.spinner("Analisando base de conhecimento..."):
-                    # Busca robusta
                     context = retriever.retrieve_context(prompt)
                     response = generator.generate_answer(prompt, context)
                     
-                    # Simulação de digitação para efeito visual
                     placeholder = st.empty()
                     full_response = ""
                     for chunk in response.split():
@@ -154,10 +157,10 @@ with col1:
                             st.info(context)
                             
         st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.sentiments.append(None) # Placeholder para a resposta da IA
 
 with col2:
     st.subheader("📊 Status da Base")
-    # Estatísticas rápidas
     try:
         with db._get_connection() as conn:
             cursor = conn.cursor()
@@ -169,6 +172,28 @@ with col2:
         st.metric("Documentos", total_files)
         st.metric("Fragmentos (Chunks)", total_chunks)
         
+        # Dashboard de Sentimentos
+        st.markdown("---")
+        st.subheader("🎭 Humor do Usuário")
+        if st.session_state.sentiments:
+            valid_sentiments = [s['sentiment'] for s in st.session_state.sentiments if s]
+            if valid_sentiments:
+                pos = valid_sentiments.count('positivo')
+                neu = valid_sentiments.count('neutro')
+                neg = valid_sentiments.count('negativo')
+                
+                st.write(f"😊 Positivo: {pos}")
+                st.write(f"😐 Neutro: {neu}")
+                st.write(f"😡 Negativo: {neg}")
+                
+                # Barra de progresso visual
+                total = len(valid_sentiments)
+                st.progress(pos/total if total > 0 else 0, text="Positividade")
+            else:
+                st.caption("Nenhuma interação analisada.")
+        else:
+            st.caption("Aguardando interações...")
+            
         st.markdown("---")
         st.subheader("📂 Arquivos Recentes")
         with db._get_connection() as conn:
